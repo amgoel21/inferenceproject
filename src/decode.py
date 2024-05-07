@@ -83,7 +83,6 @@ def decode1(ciphertext: str, has_breakpoint: bool,f0 =tuple(i for i in range(ALP
 def decode(ciphertext: str, has_breakpoint: bool) -> str:
     if(has_breakpoint == False):
         text,ll,cipher = decode1(ciphertext,False,iters=10000)
-        print(text)
         return text
     currentbreakpoint = len(ciphertext)//2
     minbound=0
@@ -100,18 +99,17 @@ def decode(ciphertext: str, has_breakpoint: bool) -> str:
         #print("E2: "+str(e2))
         f01=c1
         f02=c2
-        if(e1>3.6 and e1>e2):
+        if(e1>3.65 and e1>e2):
             if(currentbreakpoint<maxbound):
                 maxbound=currentbreakpoint
             currentbreakpoint = (currentbreakpoint+minbound)//2
-        elif(e2>3.6 and e2>e1):
+        elif(e2>3.65 and e2>e1):
             if(currentbreakpoint>minbound):
                 minbound=currentbreakpoint
             currentbreakpoint = (currentbreakpoint+maxbound)//2
         else:
             badentropy=True
             break
-    print(p1+p2)
     return p1+p2
 
 
