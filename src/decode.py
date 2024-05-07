@@ -82,7 +82,7 @@ def decode1(ciphertext: str, has_breakpoint: bool,f0 =tuple(i for i in range(ALP
 
 def decode(ciphertext: str, has_breakpoint: bool) -> str:
     if(has_breakpoint == False):
-        text,ll,cipher = decode1(ciphertext,False,iters=10000)
+        text,ll,cipher = decode1(ciphertext,False,iters=7500)
         return text
     count=0
     currentbreakpoint = len(ciphertext)//2
@@ -96,13 +96,13 @@ def decode(ciphertext: str, has_breakpoint: bool) -> str:
     while(badentropy):
         count+=1
         #print(currentbreakpoint)
-        p1,e1,c1=decode1(ciphertext[:currentbreakpoint],has_breakpoint=False,f0=f01,iters=10000)
+        p1,e1,c1=decode1(ciphertext[:currentbreakpoint],has_breakpoint=False,f0=f01,iters=7500)
         #print("E1: "+str(e1))
         # p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02)
         #print("E2: "+str(e2))
         f01=c1
         #f02=c2
-        if(e1>3.55):
+        if(e1>3.45):
             prevbreak = currentbreakpoint
             if(currentbreakpoint<maxbound):
                 maxbound=currentbreakpoint
