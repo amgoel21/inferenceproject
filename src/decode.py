@@ -84,34 +84,40 @@ def decode(ciphertext: str, has_breakpoint: bool) -> str:
     if(has_breakpoint == False):
         text,ll,cipher = decode1(ciphertext,False,iters=10000)
         return text
+    count=0
     currentbreakpoint = len(ciphertext)//2
+    prevbreak=-1
     minbound=0
     maxbound=len(ciphertext)
     badentropy=True
     f01=tuple(i for i in range(ALPHASIZE))
     f02=tuple(i for i in range(ALPHASIZE))
 
-    while(badentropy):
+    while(badentropy and count<1+np.log2(len(ciphertext))):
+        count+=1
         #print(currentbreakpoint)
         p1,e1,c1=decode1(ciphertext[:currentbreakpoint],has_breakpoint=False,f0=f01)
         #print("E1: "+str(e1))
-        p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02)
+        # p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02)
         #print("E2: "+str(e2))
         f01=c1
-        f02=c2
-        if(e1>3.65 and e1>e2):
+        #f02=c2
+        if(e1>3.6):
+            prevbreak = currentbreakpoint
             if(currentbreakpoint<maxbound):
                 maxbound=currentbreakpoint
             currentbreakpoint = (currentbreakpoint+minbound)//2
-        elif(e2>3.65 and e2>e1):
+        elif(-2<currentbreakpoint-prevbreak<2):
+            badnetropy=True
+            p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02,iters=10000)
+            return p1+p2
+        else:
+            prevbreak = currentbreakpoint
             if(currentbreakpoint>minbound):
                 minbound=currentbreakpoint
             currentbreakpoint = (currentbreakpoint+maxbound)//2
-        else:
-            badentropy=True
-            break
+    p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02,iters=10000)
     return p1+p2
-
 
 
     
