@@ -96,13 +96,13 @@ def decode(ciphertext: str, has_breakpoint: bool) -> str:
     while(badentropy):
         count+=1
         #print(currentbreakpoint)
-        p1,e1,c1=decode1(ciphertext[:currentbreakpoint],has_breakpoint=False,f0=f01,iters=7500)
+        p1,e1,c1=decode1(ciphertext[:currentbreakpoint],has_breakpoint=False,f0=f01,iters=10000)
         #print("E1: "+str(e1))
         # p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02)
         #print("E2: "+str(e2))
         f01=c1
         #f02=c2
-        if(e1>3.45):
+        if(e1>3.48):
             prevbreak = currentbreakpoint
             if(currentbreakpoint<maxbound):
                 maxbound=currentbreakpoint
