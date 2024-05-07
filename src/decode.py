@@ -102,7 +102,7 @@ def decode(ciphertext: str, has_breakpoint: bool) -> str:
         #print("E2: "+str(e2))
         f01=c1
         #f02=c2
-        if(e1>3.5):
+        if(e1>3.6):
             prevbreak = currentbreakpoint
             if(currentbreakpoint<maxbound):
                 maxbound=currentbreakpoint
@@ -112,10 +112,14 @@ def decode(ciphertext: str, has_breakpoint: bool) -> str:
             p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02,iters=15000)
             return p1+p2
         else:
-            prevbreak = currentbreakpoint
-            if(currentbreakpoint>minbound):
-                minbound=currentbreakpoint
-            currentbreakpoint = (currentbreakpoint+maxbound)//2
+            p2,e2,c2=decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f01,iters=15000)
+            if(e2>3.6):
+                prevbreak = currentbreakpoint
+                if(currentbreakpoint>minbound):
+                    minbound=currentbreakpoint
+                currentbreakpoint = (currentbreakpoint+maxbound)//2
+            else:
+                return p1+p2
     p2,e2,c2 = decode1(ciphertext[currentbreakpoint:],has_breakpoint=False,f0=f02,iters=15000)
     return p1+p2
 
